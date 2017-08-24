@@ -39,7 +39,6 @@
             this.imgFill = new System.Windows.Forms.PictureBox();
             this.pnlPalette = new System.Windows.Forms.FlowLayoutPanel();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
-            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlCanvas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).BeginInit();
@@ -95,7 +94,6 @@
             this.pnlMenu.Controls.Add(this.imgSave);
             this.pnlMenu.Controls.Add(this.imgBrush);
             this.pnlMenu.Controls.Add(this.imgFill);
-            this.pnlMenu.Controls.Add(this.button1);
             this.pnlMenu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMenu.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlMenu.Location = new System.Drawing.Point(2, 2);
@@ -170,16 +168,6 @@
             // 
             this.dlgOpenFile.Title = "Open Image File";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(3, 387);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // PaintForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -215,6 +203,5 @@
         private System.Windows.Forms.PictureBox imgFill;
         private System.Windows.Forms.PictureBox imgCanvas;
         private System.Windows.Forms.OpenFileDialog dlgOpenFile;
-        private System.Windows.Forms.Button button1;
     }
 }

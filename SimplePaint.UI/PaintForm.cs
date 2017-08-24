@@ -105,7 +105,8 @@ namespace SimplePaint.UI
 
         private void imgSave_Click(object sender, EventArgs e)
         {
-
+            GetImageFromCanvas();
+            MessageBox.Show("Not implemented");
         }
 
         private void imgBrush_Click(object sender, EventArgs e)
@@ -191,11 +192,6 @@ namespace SimplePaint.UI
             imgCanvas.DrawToBitmap(bmp, imgCanvas.ClientRectangle);
             bmp.Save("C:\\temp\\myImage.bmp");
             return bmp;            
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            GetImageFromCanvas();
-        }
+        }        
     }
 }
