@@ -1,0 +1,9 @@
+﻿[] color palette
+	- [] rainbow palette normal and light
+	- [] black, white, gray
+	- [] current selected color
+[] resize image when window resizes
+[] undo x 3
+[] store image in bitmap for manipulation rather than picture box
+[] save as
+[] improve menu button functionality
