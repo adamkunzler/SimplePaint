@@ -31,13 +31,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PaintForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlCanvas = new System.Windows.Forms.Panel();
+            this.imgCanvas = new System.Windows.Forms.PictureBox();
             this.pnlMenu = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnlPalette = new System.Windows.Forms.FlowLayoutPanel();
             this.imgOpen = new System.Windows.Forms.PictureBox();
             this.imgSave = new System.Windows.Forms.PictureBox();
             this.imgBrush = new System.Windows.Forms.PictureBox();
             this.imgFill = new System.Windows.Forms.PictureBox();
+            this.pnlPalette = new System.Windows.Forms.FlowLayoutPanel();
+            this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
+            this.pnlCanvas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).BeginInit();
             this.pnlMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgOpen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgSave)).BeginInit();
@@ -65,11 +70,23 @@
             // pnlCanvas
             // 
             this.pnlCanvas.BackColor = System.Drawing.Color.White;
+            this.pnlCanvas.Controls.Add(this.imgCanvas);
             this.pnlCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlCanvas.Location = new System.Drawing.Point(103, 3);
             this.pnlCanvas.Name = "pnlCanvas";
             this.pnlCanvas.Size = new System.Drawing.Size(706, 541);
             this.pnlCanvas.TabIndex = 1;
+            // 
+            // imgCanvas
+            // 
+            this.imgCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imgCanvas.Location = new System.Drawing.Point(0, 0);
+            this.imgCanvas.Name = "imgCanvas";
+            this.imgCanvas.Size = new System.Drawing.Size(706, 541);
+            this.imgCanvas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.imgCanvas.TabIndex = 0;
+            this.imgCanvas.TabStop = false;
+            this.imgCanvas.Click += new System.EventHandler(this.imgCanvas_Click);
             // 
             // pnlMenu
             // 
@@ -78,6 +95,7 @@
             this.pnlMenu.Controls.Add(this.imgSave);
             this.pnlMenu.Controls.Add(this.imgBrush);
             this.pnlMenu.Controls.Add(this.imgFill);
+            this.pnlMenu.Controls.Add(this.button1);
             this.pnlMenu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMenu.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlMenu.Location = new System.Drawing.Point(2, 2);
@@ -85,15 +103,6 @@
             this.pnlMenu.Name = "pnlMenu";
             this.pnlMenu.Size = new System.Drawing.Size(96, 543);
             this.pnlMenu.TabIndex = 3;
-            // 
-            // pnlPalette
-            // 
-            this.pnlPalette.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.pnlPalette.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPalette.Location = new System.Drawing.Point(815, 3);
-            this.pnlPalette.Name = "pnlPalette";
-            this.pnlPalette.Size = new System.Drawing.Size(194, 541);
-            this.pnlPalette.TabIndex = 4;
             // 
             // imgOpen
             // 
@@ -130,7 +139,8 @@
             this.imgBrush.Size = new System.Drawing.Size(90, 90);
             this.imgBrush.TabIndex = 2;
             this.imgBrush.TabStop = false;
-            this.imgBrush.Click += new System.EventHandler(this.imgBrush_Click);
+            this.imgBrush.Visible = false;
+            this.imgBrush.Click += new System.EventHandler(this.img_Click);
             this.imgBrush.MouseEnter += new System.EventHandler(this.img_MouseEnter);
             this.imgBrush.MouseLeave += new System.EventHandler(this.img_MouseLeave);
             // 
@@ -143,9 +153,32 @@
             this.imgFill.Size = new System.Drawing.Size(90, 90);
             this.imgFill.TabIndex = 3;
             this.imgFill.TabStop = false;
-            this.imgFill.Click += new System.EventHandler(this.imgFill_Click);
+            this.imgFill.Click += new System.EventHandler(this.img_Click);
             this.imgFill.MouseEnter += new System.EventHandler(this.img_MouseEnter);
             this.imgFill.MouseLeave += new System.EventHandler(this.img_MouseLeave);
+            // 
+            // pnlPalette
+            // 
+            this.pnlPalette.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pnlPalette.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPalette.Location = new System.Drawing.Point(815, 3);
+            this.pnlPalette.Name = "pnlPalette";
+            this.pnlPalette.Size = new System.Drawing.Size(194, 541);
+            this.pnlPalette.TabIndex = 4;
+            // 
+            // dlgOpenFile
+            // 
+            this.dlgOpenFile.Title = "Open Image File";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(3, 387);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // PaintForm
             // 
@@ -158,6 +191,9 @@
             this.Name = "PaintForm";
             this.Text = "PaintForm";
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.pnlCanvas.ResumeLayout(false);
+            this.pnlCanvas.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).EndInit();
             this.pnlMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imgOpen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgSave)).EndInit();
@@ -177,5 +213,8 @@
         private System.Windows.Forms.PictureBox imgSave;
         private System.Windows.Forms.PictureBox imgBrush;
         private System.Windows.Forms.PictureBox imgFill;
+        private System.Windows.Forms.PictureBox imgCanvas;
+        private System.Windows.Forms.OpenFileDialog dlgOpenFile;
+        private System.Windows.Forms.Button button1;
     }
 }
