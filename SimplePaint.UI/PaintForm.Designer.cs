@@ -32,26 +32,26 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlPalette = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlCanvas = new System.Windows.Forms.Panel();
-            this.pnlMenu = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnlTools = new System.Windows.Forms.FlowLayoutPanel();
-            this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.imgCanvas = new System.Windows.Forms.PictureBox();
+            this.pnlMenu = new System.Windows.Forms.FlowLayoutPanel();
             this.imgOpen = new System.Windows.Forms.PictureBox();
             this.imgSave = new System.Windows.Forms.PictureBox();
             this.imgUndo = new System.Windows.Forms.PictureBox();
             this.imgRedo = new System.Windows.Forms.PictureBox();
+            this.pnlTools = new System.Windows.Forms.FlowLayoutPanel();
             this.imgBrush = new System.Windows.Forms.PictureBox();
             this.imgFill = new System.Windows.Forms.PictureBox();
             this.imgText = new System.Windows.Forms.PictureBox();
+            this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlCanvas.SuspendLayout();
-            this.pnlMenu.SuspendLayout();
-            this.pnlTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).BeginInit();
+            this.pnlMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgOpen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgSave)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgUndo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgRedo)).BeginInit();
+            this.pnlTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgBrush)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgFill)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgText)).BeginInit();
@@ -60,9 +60,9 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPanel1.Controls.Add(this.pnlPalette, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.pnlCanvas, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.pnlMenu, 0, 0);
@@ -72,8 +72,8 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1184, 861);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1746, 861);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // pnlPalette
@@ -81,9 +81,9 @@
             this.pnlPalette.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.tableLayoutPanel1.SetColumnSpan(this.pnlPalette, 3);
             this.pnlPalette.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPalette.Location = new System.Drawing.Point(3, 764);
+            this.pnlPalette.Location = new System.Drawing.Point(3, 714);
             this.pnlPalette.Name = "pnlPalette";
-            this.pnlPalette.Size = new System.Drawing.Size(1178, 94);
+            this.pnlPalette.Size = new System.Drawing.Size(1740, 144);
             this.pnlPalette.TabIndex = 5;
             // 
             // pnlCanvas
@@ -91,10 +91,20 @@
             this.pnlCanvas.BackColor = System.Drawing.Color.White;
             this.pnlCanvas.Controls.Add(this.imgCanvas);
             this.pnlCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlCanvas.Location = new System.Drawing.Point(103, 3);
+            this.pnlCanvas.Location = new System.Drawing.Point(153, 3);
             this.pnlCanvas.Name = "pnlCanvas";
-            this.pnlCanvas.Size = new System.Drawing.Size(978, 755);
+            this.pnlCanvas.Size = new System.Drawing.Size(1440, 705);
             this.pnlCanvas.TabIndex = 1;
+            // 
+            // imgCanvas
+            // 
+            this.imgCanvas.Location = new System.Drawing.Point(0, 0);
+            this.imgCanvas.Name = "imgCanvas";
+            this.imgCanvas.Size = new System.Drawing.Size(978, 755);
+            this.imgCanvas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.imgCanvas.TabIndex = 0;
+            this.imgCanvas.TabStop = false;
+            this.imgCanvas.Click += new System.EventHandler(this.imgCanvas_Click);
             // 
             // pnlMenu
             // 
@@ -108,8 +118,62 @@
             this.pnlMenu.Location = new System.Drawing.Point(2, 2);
             this.pnlMenu.Margin = new System.Windows.Forms.Padding(2);
             this.pnlMenu.Name = "pnlMenu";
-            this.pnlMenu.Size = new System.Drawing.Size(96, 757);
+            this.pnlMenu.Size = new System.Drawing.Size(146, 707);
             this.pnlMenu.TabIndex = 3;
+            // 
+            // imgOpen
+            // 
+            this.imgOpen.BackgroundImage = global::SimplePaint.UI.Properties.Resources.img_open;
+            this.imgOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.imgOpen.Location = new System.Drawing.Point(3, 3);
+            this.imgOpen.Name = "imgOpen";
+            this.imgOpen.Size = new System.Drawing.Size(140, 140);
+            this.imgOpen.TabIndex = 0;
+            this.imgOpen.TabStop = false;
+            this.imgOpen.Click += new System.EventHandler(this.imgOpen_Click);
+            this.imgOpen.Paint += new System.Windows.Forms.PaintEventHandler(this.imgOpen_Paint);
+            this.imgOpen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseDown);
+            this.imgOpen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseUp);
+            // 
+            // imgSave
+            // 
+            this.imgSave.BackgroundImage = global::SimplePaint.UI.Properties.Resources.save1;
+            this.imgSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.imgSave.Location = new System.Drawing.Point(3, 149);
+            this.imgSave.Name = "imgSave";
+            this.imgSave.Size = new System.Drawing.Size(140, 140);
+            this.imgSave.TabIndex = 1;
+            this.imgSave.TabStop = false;
+            this.imgSave.Click += new System.EventHandler(this.imgSave_Click);
+            this.imgSave.Paint += new System.Windows.Forms.PaintEventHandler(this.imgSave_Paint);
+            this.imgSave.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseDown);
+            this.imgSave.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseUp);
+            // 
+            // imgUndo
+            // 
+            this.imgUndo.BackgroundImage = global::SimplePaint.UI.Properties.Resources.img_undo;
+            this.imgUndo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.imgUndo.Location = new System.Drawing.Point(3, 295);
+            this.imgUndo.Name = "imgUndo";
+            this.imgUndo.Size = new System.Drawing.Size(140, 140);
+            this.imgUndo.TabIndex = 2;
+            this.imgUndo.TabStop = false;
+            this.imgUndo.Paint += new System.Windows.Forms.PaintEventHandler(this.imgUndo_Paint);
+            this.imgUndo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseDown);
+            this.imgUndo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseUp);
+            // 
+            // imgRedo
+            // 
+            this.imgRedo.BackgroundImage = global::SimplePaint.UI.Properties.Resources.img_redo2;
+            this.imgRedo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.imgRedo.Location = new System.Drawing.Point(3, 441);
+            this.imgRedo.Name = "imgRedo";
+            this.imgRedo.Size = new System.Drawing.Size(140, 140);
+            this.imgRedo.TabIndex = 3;
+            this.imgRedo.TabStop = false;
+            this.imgRedo.Paint += new System.Windows.Forms.PaintEventHandler(this.imgRedo_Paint);
+            this.imgRedo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseDown);
+            this.imgRedo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseUp);
             // 
             // pnlTools
             // 
@@ -118,75 +182,10 @@
             this.pnlTools.Controls.Add(this.imgText);
             this.pnlTools.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTools.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.pnlTools.Location = new System.Drawing.Point(1087, 3);
+            this.pnlTools.Location = new System.Drawing.Point(1599, 3);
             this.pnlTools.Name = "pnlTools";
-            this.pnlTools.Size = new System.Drawing.Size(94, 755);
+            this.pnlTools.Size = new System.Drawing.Size(144, 705);
             this.pnlTools.TabIndex = 6;
-            // 
-            // dlgOpenFile
-            // 
-            this.dlgOpenFile.Title = "Open Image File";
-            // 
-            // imgCanvas
-            // 
-            this.imgCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imgCanvas.Location = new System.Drawing.Point(0, 0);
-            this.imgCanvas.Name = "imgCanvas";
-            this.imgCanvas.Size = new System.Drawing.Size(978, 755);
-            this.imgCanvas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.imgCanvas.TabIndex = 0;
-            this.imgCanvas.TabStop = false;
-            this.imgCanvas.Click += new System.EventHandler(this.imgCanvas_Click);
-            // 
-            // imgOpen
-            // 
-            this.imgOpen.BackgroundImage = global::SimplePaint.UI.Properties.Resources.img_open;
-            this.imgOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.imgOpen.Location = new System.Drawing.Point(3, 3);
-            this.imgOpen.Name = "imgOpen";
-            this.imgOpen.Size = new System.Drawing.Size(90, 90);
-            this.imgOpen.TabIndex = 0;
-            this.imgOpen.TabStop = false;
-            this.imgOpen.Click += new System.EventHandler(this.imgOpen_Click);
-            this.imgOpen.Paint += new System.Windows.Forms.PaintEventHandler(this.imgOpen_Paint);
-            this.imgOpen.MouseEnter += new System.EventHandler(this.img_MouseEnter);
-            this.imgOpen.MouseLeave += new System.EventHandler(this.img_MouseLeave);
-            // 
-            // imgSave
-            // 
-            this.imgSave.BackgroundImage = global::SimplePaint.UI.Properties.Resources.save1;
-            this.imgSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.imgSave.Location = new System.Drawing.Point(3, 99);
-            this.imgSave.Name = "imgSave";
-            this.imgSave.Size = new System.Drawing.Size(90, 90);
-            this.imgSave.TabIndex = 1;
-            this.imgSave.TabStop = false;
-            this.imgSave.Click += new System.EventHandler(this.imgSave_Click);
-            this.imgSave.Paint += new System.Windows.Forms.PaintEventHandler(this.imgSave_Paint);
-            this.imgSave.MouseEnter += new System.EventHandler(this.img_MouseEnter);
-            this.imgSave.MouseLeave += new System.EventHandler(this.img_MouseLeave);
-            // 
-            // imgUndo
-            // 
-            this.imgUndo.BackgroundImage = global::SimplePaint.UI.Properties.Resources.img_undo;
-            this.imgUndo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.imgUndo.Location = new System.Drawing.Point(3, 195);
-            this.imgUndo.Name = "imgUndo";
-            this.imgUndo.Size = new System.Drawing.Size(90, 90);
-            this.imgUndo.TabIndex = 2;
-            this.imgUndo.TabStop = false;
-            this.imgUndo.Paint += new System.Windows.Forms.PaintEventHandler(this.imgUndo_Paint);
-            // 
-            // imgRedo
-            // 
-            this.imgRedo.BackgroundImage = global::SimplePaint.UI.Properties.Resources.img_redo2;
-            this.imgRedo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.imgRedo.Location = new System.Drawing.Point(3, 291);
-            this.imgRedo.Name = "imgRedo";
-            this.imgRedo.Size = new System.Drawing.Size(90, 90);
-            this.imgRedo.TabIndex = 3;
-            this.imgRedo.TabStop = false;
-            this.imgRedo.Paint += new System.Windows.Forms.PaintEventHandler(this.imgRedo_Paint);
             // 
             // imgBrush
             // 
@@ -194,58 +193,61 @@
             this.imgBrush.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.imgBrush.Location = new System.Drawing.Point(3, 3);
             this.imgBrush.Name = "imgBrush";
-            this.imgBrush.Size = new System.Drawing.Size(90, 90);
+            this.imgBrush.Size = new System.Drawing.Size(140, 140);
             this.imgBrush.TabIndex = 2;
             this.imgBrush.TabStop = false;
             this.imgBrush.Visible = false;
             this.imgBrush.Click += new System.EventHandler(this.img_Click);
-            this.imgBrush.MouseEnter += new System.EventHandler(this.img_MouseEnter);
-            this.imgBrush.MouseLeave += new System.EventHandler(this.img_MouseLeave);
+            this.imgBrush.Paint += new System.Windows.Forms.PaintEventHandler(this.toolBoxItem_Paint);
             // 
             // imgFill
             // 
             this.imgFill.BackgroundImage = global::SimplePaint.UI.Properties.Resources.img_bucket;
             this.imgFill.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.imgFill.Location = new System.Drawing.Point(3, 99);
+            this.imgFill.Location = new System.Drawing.Point(3, 149);
             this.imgFill.Name = "imgFill";
-            this.imgFill.Size = new System.Drawing.Size(90, 90);
+            this.imgFill.Size = new System.Drawing.Size(140, 140);
             this.imgFill.TabIndex = 3;
             this.imgFill.TabStop = false;
             this.imgFill.Click += new System.EventHandler(this.img_Click);
-            this.imgFill.MouseEnter += new System.EventHandler(this.img_MouseEnter);
-            this.imgFill.MouseLeave += new System.EventHandler(this.img_MouseLeave);
+            this.imgFill.Paint += new System.Windows.Forms.PaintEventHandler(this.toolBoxItem_Paint);
             // 
             // imgText
             // 
             this.imgText.BackgroundImage = global::SimplePaint.UI.Properties.Resources.img_text;
             this.imgText.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.imgText.Location = new System.Drawing.Point(3, 195);
+            this.imgText.Location = new System.Drawing.Point(3, 295);
             this.imgText.Name = "imgText";
-            this.imgText.Size = new System.Drawing.Size(90, 90);
+            this.imgText.Size = new System.Drawing.Size(140, 140);
             this.imgText.TabIndex = 4;
             this.imgText.TabStop = false;
             this.imgText.Click += new System.EventHandler(this.img_Click);
+            this.imgText.Paint += new System.Windows.Forms.PaintEventHandler(this.toolBoxItem_Paint);
+            // 
+            // dlgOpenFile
+            // 
+            this.dlgOpenFile.Title = "Open Image File";
             // 
             // PaintForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 861);
+            this.ClientSize = new System.Drawing.Size(1746, 861);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1200, 900);
+            this.MinimumSize = new System.Drawing.Size(1762, 900);
             this.Name = "PaintForm";
             this.Text = "PaintForm";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.pnlCanvas.ResumeLayout(false);
             this.pnlCanvas.PerformLayout();
-            this.pnlMenu.ResumeLayout(false);
-            this.pnlTools.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).EndInit();
+            this.pnlMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imgOpen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgSave)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgUndo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgRedo)).EndInit();
+            this.pnlTools.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imgBrush)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgFill)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgText)).EndInit();

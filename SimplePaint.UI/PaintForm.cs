@@ -43,8 +43,15 @@ namespace SimplePaint.UI
             dlgOpenFile.Filter = "Image files (*.jpg, *.jpeg, *.png, *.gif, *.bmp) | *.jpg; *.jpeg; *.png; *.gif; *.bmp;";
 
             // init color palette
+            InitColorPalette();    
+        }
+
+        #region Private Methods - Color Palette
+
+        private void InitColorPalette()
+        {
             var colors = GetPaletteColors();
-            var paletteSquareDim = 91;
+            var paletteSquareDim = 140;
             for (int i = 0; i < colors.Length; i++)
             {
                 var clrBox = new PictureBox
@@ -53,11 +60,42 @@ namespace SimplePaint.UI
                     Width = paletteSquareDim,
                     Height = paletteSquareDim
                 };
-                clrBox.Click += ClrBox_Click;                
+                clrBox.Click += ClrBox_Click;
+                clrBox.Paint += ClrBox_Paint;
                 pnlPalette.Controls.Add(clrBox);
-            }            
+            }
         }
-                
+
+        private void ClrBox_Paint(object sender, PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            if (((PictureBox)sender).BackColor == _selectedColor)
+            {
+                DrawBorderOnControl(sender as Control, e.Graphics);
+            }
+        }
+
+        private void DrawBorderOnControl(Control control, Graphics gfx)
+        {
+            if (control == null) return;
+
+            var r = control.ClientRectangle;
+            r.Height -= 1;
+            r.Width -= 1;
+
+            GraphicsPath rr = new GraphicsPath();
+            rr.AddLine(r.X, r.Y, r.X + r.Width, r.Y);
+            rr.AddLine(r.X + r.Width, r.Y, r.X + r.Width, r.Y + r.Height);
+            rr.AddLine(r.X + r.Width, r.Y + r.Height, r.X, r.Y + r.Height);
+            rr.AddLine(r.X, r.Y + r.Height, r.X, r.Y);
+
+            using (var p = new Pen(Color.FromArgb(30, 144, 255), 10f))
+            {
+                gfx.DrawPath(p, rr);
+            }
+        }
+
         private void ClrBox_Click(object sender, EventArgs e)
         {            
             foreach (var control in pnlPalette.Controls)
@@ -69,30 +107,28 @@ namespace SimplePaint.UI
             }
 
             _selectedColor = ((PictureBox)sender).BackColor;
-            ((PictureBox)sender).BorderStyle = BorderStyle.FixedSingle;
+
+            pnlPalette.Refresh();
         }
-        
+
+        #endregion Private Methods - Color Palette
+
         #region Event Handlers - Menu Items
 
-        private void img_MouseEnter(object sender, EventArgs e)
-        {            
-            ((PictureBox)sender).BorderStyle = BorderStyle.FixedSingle;            
-            ((PictureBox)sender).BackColor = Color.White;
-        }
-
-        private void img_MouseLeave(object sender, EventArgs e)
-        {
-            if (sender == _selectedAction) return;
-
-            ((PictureBox)sender).BorderStyle = BorderStyle.None;
-            ((PictureBox)sender).BackColor = Color.LightGray;
-        }
-
         private void img_Click(object sender, EventArgs e)
-        {
+        {            
             _selectedAction = sender as PictureBox;
-            ((PictureBox)sender).BorderStyle = BorderStyle.FixedSingle;
-            ((PictureBox)sender).BackColor = Color.White;
+            pnlTools.Refresh();
+        }
+
+        private void toolBoxItem_Paint(object sender, PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            if (sender == _selectedAction)
+            {
+                DrawBorderOnControl(sender as Control, e.Graphics);
+            }
         }
 
         private void imgOpen_Click(object sender, EventArgs e)
@@ -131,6 +167,20 @@ namespace SimplePaint.UI
         private void imgBrush_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void imgMenuItem_MouseDown(object sender, MouseEventArgs e)
+        {
+            ((PictureBox)sender).BorderStyle = BorderStyle.FixedSingle;
+            ((PictureBox)sender).BackColor = Color.White;
+        }
+
+        private void imgMenuItem_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (sender == _selectedAction) return;
+
+            ((PictureBox)sender).BorderStyle = BorderStyle.None;
+            ((PictureBox)sender).BackColor = Color.LightGray;
         }
 
         #endregion Event Handlers - Menu Items
@@ -341,6 +391,7 @@ namespace SimplePaint.UI
             e.Graphics.DrawString("Redo", _menuItemFont, Brushes.Black, imgOpen.ClientRectangle, _menuItemFormat);
         }
 
-        #endregion Event Handlers - Menu Items Paint
+
+        #endregion Event Handlers - Menu Items Paint        
     }
 }
