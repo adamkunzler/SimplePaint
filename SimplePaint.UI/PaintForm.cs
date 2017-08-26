@@ -1,8 +1,5 @@
-﻿using FloodFill;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -16,44 +13,66 @@ namespace SimplePaint.UI
     public partial class PaintForm : Form
     {
         private Random _random = new Random();
+
         private string _openedFileName;
+        private Font _menuItemFont = new Font(new FontFamily("Cambria"), 20, FontStyle.Regular, GraphicsUnit.Pixel);
+        private StringFormat _menuItemFormat = new StringFormat()
+        {
+            Alignment = StringAlignment.Center,
+            LineAlignment = StringAlignment.Center
+        };
+
         private PictureBox _selectedAction = null;
-        private FloodFiller _bucketTool;
+        
         private Color _selectedColor = Color.Black;
+        
 
         public PaintForm()
         {
             InitializeComponent();
 
             Text = "Simple Paint";
-            
 
+            // init the canvas image
+            var width = (float)imgCanvas.ClientSize.Width;
+            var height = (float)imgCanvas.ClientSize.Height;
+            imgCanvas.Image = new Bitmap((int)width, (int)height);
+
+            // init open file dialog
             dlgOpenFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             dlgOpenFile.Filter = "Image files (*.jpg, *.jpeg, *.png, *.gif, *.bmp) | *.jpg; *.jpeg; *.png; *.gif; *.bmp;";
 
-            for (int i = 0; i < 21; i++)
+            // init color palette
+            var colors = GetPaletteColors();
+            var paletteSquareDim = 91;
+            for (int i = 0; i < colors.Length; i++)
             {
                 var clrBox = new PictureBox
                 {
-                    BackColor = GetRandomColor(),
-                    Width = 56,
-                    Height = 56
+                    BackColor = colors[i],
+                    Width = paletteSquareDim,
+                    Height = paletteSquareDim
                 };
-                clrBox.Click += ClrBox_Click;
+                clrBox.Click += ClrBox_Click;                
                 pnlPalette.Controls.Add(clrBox);
             }            
         }
                 
         private void ClrBox_Click(object sender, EventArgs e)
-        {
+        {            
+            foreach (var control in pnlPalette.Controls)
+            {
+                if (!(control is PictureBox)) continue;
+
+                var pb = (PictureBox)control;
+                pb.BorderStyle = BorderStyle.None;
+            }
+
             _selectedColor = ((PictureBox)sender).BackColor;
+            ((PictureBox)sender).BorderStyle = BorderStyle.FixedSingle;
         }
-
-        private Color GetRandomColor()
-        {
-            return Color.FromArgb(_random.Next(256), _random.Next(256), _random.Next(256));
-
-        }
+        
+        #region Event Handlers - Menu Items
 
         private void img_MouseEnter(object sender, EventArgs e)
         {            
@@ -114,15 +133,49 @@ namespace SimplePaint.UI
 
         }
 
+        #endregion Event Handlers - Menu Items
+
+        #region Private Methods - Canvas
+
         private void imgCanvas_Click(object sender, EventArgs e)
         {
             if (_selectedAction == null) return;
 
-            if(_selectedAction.Name == "imgFill")
+            switch(_selectedAction.Name)
             {
-                DoBucketFill();
-            }
-        }        
+                case "imgFill":
+                    DoBucketFill();
+                    break;
+                case "imgText":
+                    DoEnterText();
+                    break;
+                case "imgBrush":
+                    DoBrush();
+                    break;
+            }            
+        }
+
+        #endregion Private Methods - Canvas
+
+        #region Private Methods - Text Tool
+
+        private void DoEnterText()
+        {
+
+        }
+
+        #endregion Private Methods - Text Tool
+
+        #region Private Methods - Brush Tool
+
+        private void DoBrush()
+        {
+
+        }
+
+        #endregion Private Methods - Brush Tool
+
+        #region Private Methods - Bucket Tool
 
         private void DoBucketFill()
         {
@@ -186,12 +239,108 @@ namespace SimplePaint.UI
             }            
         }
 
+        #endregion Private Methods - Bucket Tool
+
         private Bitmap GetImageFromCanvas()
         {
             var bmp = new Bitmap(imgCanvas.ClientSize.Width, imgCanvas.ClientSize.Height);            
             imgCanvas.DrawToBitmap(bmp, imgCanvas.ClientRectangle);
             bmp.Save("C:\\temp\\myImage.bmp");
             return bmp;            
-        }        
+        }
+
+        #region Private Methods - Colors
+
+        /// <summary>
+        /// Returns colors for the palette.
+        /// By default it'll return Black, Gray, White, and the 7 
+        /// rainbow colors (red, orange, yellow, green, blue, indigo, 
+        /// violet). If includeLightShades is true, it'll also
+        /// return light shades of the rainbow colors.
+        /// </summary>
+        /// <param name="includeLightShades"></param>
+        /// <returns></returns>
+        private Color[] GetPaletteColors(bool includeLightShades = false)
+        {
+            var colors = new List<Color>();
+
+            colors.Add(Color.Black);
+            colors.Add(Color.Gray);
+            colors.Add(Color.White);
+
+            var brown = Color.FromArgb(139, 69, 19);
+            colors.Add(brown);
+            if (includeLightShades) colors.Add(ControlPaint.Light(brown));
+
+            var red = Color.FromArgb(255, 0, 0);
+            colors.Add(red);
+            if(includeLightShades) colors.Add(ControlPaint.Light(red));
+            
+            var orange = Color.FromArgb(255, 127, 0);
+            colors.Add(orange);
+            if (includeLightShades) colors.Add(ControlPaint.Light(orange));
+            
+            var yellow = Color.FromArgb(255, 255, 0);
+            colors.Add(yellow);
+            if (includeLightShades) colors.Add(ControlPaint.Light(yellow));
+           
+            var green = Color.FromArgb(0, 255, 0);
+            colors.Add(green);
+            if (includeLightShades) colors.Add(ControlPaint.Light(green));
+            
+            var blue = Color.FromArgb(0, 0, 255);
+            colors.Add(blue);
+            if (includeLightShades) colors.Add(ControlPaint.Light(blue));
+            
+            var indigo = Color.FromArgb(75, 0, 130);
+            colors.Add(indigo);
+            if (includeLightShades) colors.Add(ControlPaint.Light(indigo));
+            
+            var violet = Color.FromArgb(148, 0, 211);
+            colors.Add(violet);
+            if (includeLightShades) colors.Add(ControlPaint.Light(violet));
+            
+            var pink = Color.FromArgb(255, 92, 161);
+            colors.Add(pink);
+            if (includeLightShades) colors.Add(ControlPaint.Light(pink));
+
+            return colors.ToArray();
+        }
+
+        private Color GetRandomColor()
+        {
+            return Color.FromArgb(_random.Next(256), _random.Next(256), _random.Next(256));
+
+        }
+
+        #endregion Private Methods - Colors
+
+        #region Event Handlers - Menu Items Paint
+
+        private void imgOpen_Paint(object sender, PaintEventArgs e)
+        {
+            base.OnPaint(e);            
+            e.Graphics.DrawString("Open", _menuItemFont, Brushes.Black, imgOpen.ClientRectangle, _menuItemFormat);            
+        }
+        
+        private void imgSave_Paint(object sender, PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            e.Graphics.DrawString("Save", _menuItemFont, Brushes.Black, imgOpen.ClientRectangle, _menuItemFormat);
+        }
+
+        private void imgUndo_Paint(object sender, PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            e.Graphics.DrawString("Undo", _menuItemFont, Brushes.Black, imgOpen.ClientRectangle, _menuItemFormat);
+        }
+
+        private void imgRedo_Paint(object sender, PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            e.Graphics.DrawString("Redo", _menuItemFont, Brushes.Black, imgOpen.ClientRectangle, _menuItemFormat);
+        }
+
+        #endregion Event Handlers - Menu Items Paint
     }
 }

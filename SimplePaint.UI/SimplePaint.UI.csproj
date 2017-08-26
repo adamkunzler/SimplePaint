@@ -62,8 +62,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FloodFiller\AbstractFloodFiller.cs" />
-    <Compile Include="FloodFiller\FloodFiller.cs" />
     <Compile Include="PaintForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +130,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\img_redo1.png" />
+    <None Include="Resources\img_redo.jpg" />
+    <None Include="Resources\img_redo.png" />
+    <None Include="Resources\img_undo.png" />
+    <None Include="Resources\img_text.png" />
     <Content Include="TODO_FEATURES.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
