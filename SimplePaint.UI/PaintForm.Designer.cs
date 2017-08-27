@@ -43,6 +43,7 @@
             this.imgFill = new System.Windows.Forms.PictureBox();
             this.imgText = new System.Windows.Forms.PictureBox();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
+            this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlCanvas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).BeginInit();
@@ -230,6 +231,10 @@
             // 
             this.dlgOpenFile.Title = "Open Image File";
             // 
+            // dlgSaveFile
+            // 
+            this.dlgSaveFile.FileOk += new System.ComponentModel.CancelEventHandler(this.Dlg_FileOk);
+            // 
             // PaintForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -273,5 +278,6 @@
         private System.Windows.Forms.PictureBox imgText;
         private System.Windows.Forms.PictureBox imgUndo;
         private System.Windows.Forms.PictureBox imgRedo;
+        private System.Windows.Forms.SaveFileDialog dlgSaveFile;
     }
 }

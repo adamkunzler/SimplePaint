@@ -25,11 +25,13 @@ namespace SimplePaint.UI
         };
         private Color _borderColor = Color.FromArgb(30, 144, 255);
         private float _borderWidth = 10f;
-
+        private string _openDialogFilter = "Image files (*.jpg, *.jpeg, *.png, *.gif, *.bmp) | *.jpg; *.jpeg; *.png; *.gif; *.bmp;";
+        private string _saveDialogFilter = "Png Image (.png)|*.png|Gif Image (.gif)|*.gif|JPEG Image (.jpeg)|*.jpeg|JPEG Image (.jpg)|*.jpeg|Bitmap Image (.bmp)|*.bmp";
         private PictureBox _selectedToolAction = null;        
         private Color _selectedColor = Color.Black;
 
         private string _openedFileName;
+        private string _savedFileName;
         private Bitmap _currentBitmap;
         private Stack<Bitmap> _redo;
         private Stack<Bitmap> _undo;
@@ -47,12 +49,21 @@ namespace SimplePaint.UI
             // init the canvas image and bitmap
             ResizeCanvasAndCurrentBitmap();
 
-            // init open file dialog
+            // init dialogs
             dlgOpenFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            dlgOpenFile.Filter = "Image files (*.jpg, *.jpeg, *.png, *.gif, *.bmp) | *.jpg; *.jpeg; *.png; *.gif; *.bmp;";
+            dlgOpenFile.Filter = _openDialogFilter;
+            dlgSaveFile.Filter = _saveDialogFilter;
+            dlgSaveFile.AddExtension = true;
 
             // init color palette
             InitColorPalette();    
+        }
+
+        private void ResetForm()
+        {
+            Text = _formTitle;
+            _openedFileName = string.Empty;
+            _savedFileName = string.Empty;
         }
 
         #endregion Constructors
@@ -304,16 +315,22 @@ namespace SimplePaint.UI
         {
             if (dlgOpenFile.ShowDialog(this) != DialogResult.OK) return;
 
+            ResetForm();
+
+            // open the image file from a stream so we don't lock the file
             _openedFileName = dlgOpenFile.FileName;
-            var image = new Bitmap(_openedFileName);
+            var image = GetImageFromFile(_openedFileName);
 
             var dims = ResizeCanvasAndCurrentBitmap();
 
             var gfx = Graphics.FromImage(_currentBitmap);
+
+            // high koala-t graphics            
             gfx.InterpolationMode = InterpolationMode.High;
             gfx.CompositingQuality = CompositingQuality.HighQuality;
             gfx.SmoothingMode = SmoothingMode.AntiAlias;
 
+            // scale the loaded image and render it to the bitmap
             var scale = Math.Min(dims.X / image.Width, dims.Y / image.Height);
             var scaleWidth = (int)(image.Width * scale);
             var scaleHeight = (int)(image.Height * scale);
@@ -323,14 +340,70 @@ namespace SimplePaint.UI
             imgCanvas.Refresh();
         }
 
+        /// <summary>
+        /// Open the an image file via stream
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        private Image GetImageFromFile(string filename)
+        {
+            byte[] bytes = System.IO.File.ReadAllBytes(filename);
+            System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes);
+            return Image.FromStream(ms);
+        }
+
         #endregion Open Menu Item
 
         #region Save Menu Item
 
         private void imgSave_Click(object sender, EventArgs e)
         {
-            GetImageFromCanvas();
-            MessageBox.Show("Not implemented");
+            //GetImageFromCanvas();
+            if (string.IsNullOrEmpty(_savedFileName))
+            {
+                dlgSaveFile.ShowDialog();
+            }
+            else
+            {
+                SaveImage();
+            }
+        }
+
+        private void Dlg_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _savedFileName = dlgSaveFile.FileName;
+            SaveImage();
+        }
+
+        private void SaveImage()
+        {
+            var fileNameNoPath = _savedFileName.Substring(_savedFileName.LastIndexOf("\\") + 1);
+            var ext = fileNameNoPath.Substring(fileNameNoPath.LastIndexOf(".") + 1);
+            Text = $"{_formTitle} - {fileNameNoPath}";
+            
+            // create a copy of the bitmap to avoid gdi+ errors
+            var tempBitmap = new Bitmap(_currentBitmap);
+            var imgFormat = GetImageFormat(ext);
+            tempBitmap.Save(_savedFileName, imgFormat);
+            tempBitmap.Dispose();
+        }
+
+        private ImageFormat GetImageFormat(string ext)
+        {
+            switch(ext.ToLower())
+            {
+                case "jpeg":                    
+                case "jpg":
+                    return ImageFormat.Jpeg;
+                case "png":
+                    return ImageFormat.Png;
+                case "gif":
+                    return ImageFormat.Gif;
+                case "bmp":
+                    return ImageFormat.Bmp;
+                default:
+                    return ImageFormat.Png;
+            }
         }
 
         #endregion Save Menu Item
