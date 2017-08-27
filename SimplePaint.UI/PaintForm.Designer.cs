@@ -163,6 +163,7 @@
             this.imgUndo.Size = new System.Drawing.Size(140, 140);
             this.imgUndo.TabIndex = 2;
             this.imgUndo.TabStop = false;
+            this.imgUndo.Click += new System.EventHandler(this.imgUndo_Click);
             this.imgUndo.Paint += new System.Windows.Forms.PaintEventHandler(this.imgUndo_Paint);
             this.imgUndo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseDown);
             this.imgUndo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseUp);
@@ -176,6 +177,7 @@
             this.imgRedo.Size = new System.Drawing.Size(140, 140);
             this.imgRedo.TabIndex = 3;
             this.imgRedo.TabStop = false;
+            this.imgRedo.Click += new System.EventHandler(this.imgRedo_Click);
             this.imgRedo.Paint += new System.Windows.Forms.PaintEventHandler(this.imgRedo_Paint);
             this.imgRedo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseDown);
             this.imgRedo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imgMenuItem_MouseUp);

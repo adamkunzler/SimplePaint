@@ -3,7 +3,9 @@
 	- [x] black, white, gray
 	- [x] current selected color
 [] resize image when window resizes
-[] undo x 3
+[x] undo\redo
 [x] store image in bitmap for manipulation rather than picture box
 [x] save as
 [x] improve menu button functionality
+[] text feature
+[x] gdi+ error

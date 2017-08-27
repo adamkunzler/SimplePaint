@@ -33,8 +33,8 @@ namespace SimplePaint.UI
         private string _openedFileName;
         private string _savedFileName;
         private Bitmap _currentBitmap;
-        private Stack<Bitmap> _redo;
-        private Stack<Bitmap> _undo;
+        private Stack<Bitmap> _redo = new Stack<Bitmap>();
+        private Stack<Bitmap> _undo = new Stack<Bitmap>();
 
         #endregion Private Members
 
@@ -56,7 +56,9 @@ namespace SimplePaint.UI
             dlgSaveFile.AddExtension = true;
 
             // init color palette
-            InitColorPalette();    
+            InitColorPalette();
+
+            _selectedToolAction = imgFill;
         }
 
         private void ResetForm()
@@ -201,7 +203,10 @@ namespace SimplePaint.UI
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void img_Click(object sender, EventArgs e)
-        {            
+        {
+            MessageBox.Show("Coming soon!!");
+            return;
+
             _selectedToolAction = sender as PictureBox;
             pnlTools.Refresh();
         }
@@ -246,7 +251,63 @@ namespace SimplePaint.UI
         }
 
         #endregion Event Handlers - Menu and Tool Items
-                                               
+
+        #region Undo\Redo
+
+        private void SetRedoPoint()
+        {
+            var image = new Bitmap(_currentBitmap);
+            _redo.Push(image);
+        }
+
+        private void DoRedo()
+        {
+            if (!_redo.Any()) return;
+
+            SetUndoPoint();
+            
+            var image = _redo.Pop();
+            DrawImageToCurrent(image);
+        }
+
+        private void SetUndoPoint()
+        {
+            var image = new Bitmap(_currentBitmap);
+            _undo.Push(image);
+        }
+
+        private void DoUndo()
+        {
+            if (!_undo.Any()) return;
+
+            SetRedoPoint();
+
+            var image = _undo.Pop();
+            DrawImageToCurrent(image);
+        }
+
+        private void imgUndo_Click(object sender, EventArgs e)
+        {
+            DoUndo();
+            imgCanvas.Refresh();
+        }
+
+        private void imgRedo_Click(object sender, EventArgs e)
+        {
+            DoRedo();
+            imgCanvas.Refresh();
+        }
+
+        private void DrawImageToCurrent(Image image)
+        {
+            var gfx = Graphics.FromImage(_currentBitmap);
+            gfx.DrawImage(image, 0, 0);
+            gfx.Dispose();
+            image.Dispose();
+        }
+
+        #endregion Undo\Redo
+
         #region Canvas
 
         /// <summary>
@@ -261,10 +322,12 @@ namespace SimplePaint.UI
             switch(_selectedToolAction.Name)
             {
                 case "imgFill":
-                    DoBucketFill();
+                    SetUndoPoint();
+                    DoBucketFill();                    
                     break;
                 case "imgText":
-                    DoEnterText();
+                    SetUndoPoint();
+                    DoEnterText();                    
                     break;
                 case "imgBrush":
                     DoBrush();
@@ -550,6 +613,6 @@ namespace SimplePaint.UI
         }
 
 
-        #endregion Event Handlers - Menu Items Paint                        
+        #endregion Event Handlers - Menu Items Paint                                
     }
 }
