@@ -12,7 +12,10 @@ namespace SimplePaint.UI
 {
     public partial class PaintForm : Form
     {
+        #region Private Members
+
         private Random _random = new Random();
+        private string _formTitle = "Simple Paint";
 
         private string _openedFileName;
         private Font _menuItemFont = new Font(new FontFamily("Cambria"), 20, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -21,17 +24,22 @@ namespace SimplePaint.UI
             Alignment = StringAlignment.Center,
             LineAlignment = StringAlignment.Center
         };
+        private Color _borderColor = Color.FromArgb(30, 144, 255);
+        private float _borderWidth = 10f;
 
-        private PictureBox _selectedAction = null;
+        private PictureBox _selectedToolAction = null;
         
         private Color _selectedColor = Color.Black;
-        
+
+        #endregion Private Members
+
+        #region Constructors
 
         public PaintForm()
         {
             InitializeComponent();
 
-            Text = "Simple Paint";
+            Text = _formTitle;
 
             // init the canvas image
             var width = (float)imgCanvas.ClientSize.Width;
@@ -46,8 +54,13 @@ namespace SimplePaint.UI
             InitColorPalette();    
         }
 
-        #region Private Methods - Color Palette
+        #endregion Constructors
 
+        #region Color Palette
+
+        /// <summary>
+        /// Generate PictureBoxes with backgroundColor set to a specified palette color
+        /// </summary>
         private void InitColorPalette()
         {
             var colors = GetPaletteColors();
@@ -66,6 +79,11 @@ namespace SimplePaint.UI
             }
         }
 
+        /// <summary>
+        /// Draw a border on the selected palette color
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClrBox_Paint(object sender, PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -75,27 +93,12 @@ namespace SimplePaint.UI
                 DrawBorderOnControl(sender as Control, e.Graphics);
             }
         }
-
-        private void DrawBorderOnControl(Control control, Graphics gfx)
-        {
-            if (control == null) return;
-
-            var r = control.ClientRectangle;
-            r.Height -= 1;
-            r.Width -= 1;
-
-            GraphicsPath rr = new GraphicsPath();
-            rr.AddLine(r.X, r.Y, r.X + r.Width, r.Y);
-            rr.AddLine(r.X + r.Width, r.Y, r.X + r.Width, r.Y + r.Height);
-            rr.AddLine(r.X + r.Width, r.Y + r.Height, r.X, r.Y + r.Height);
-            rr.AddLine(r.X, r.Y + r.Height, r.X, r.Y);
-
-            using (var p = new Pen(Color.FromArgb(30, 144, 255), 10f))
-            {
-                gfx.DrawPath(p, rr);
-            }
-        }
-
+        
+        /// <summary>
+        /// Set the _selectedColor and add border around selected color
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClrBox_Click(object sender, EventArgs e)
         {            
             foreach (var control in pnlPalette.Controls)
@@ -111,87 +114,139 @@ namespace SimplePaint.UI
             pnlPalette.Refresh();
         }
 
-        #endregion Private Methods - Color Palette
+        /// <summary>
+        /// Returns colors for the palette.
+        /// By default it'll return Black, Gray, White, and the 7 
+        /// rainbow colors (red, orange, yellow, green, blue, indigo, 
+        /// violet). If includeLightShades is true, it'll also
+        /// return light shades of the rainbow colors.
+        /// </summary>
+        /// <param name="includeLightShades"></param>
+        /// <returns></returns>
+        private Color[] GetPaletteColors(bool includeLightShades = false)
+        {
+            var colors = new List<Color>();
 
-        #region Event Handlers - Menu Items
+            colors.Add(Color.Black);
+            colors.Add(Color.Gray);
+            colors.Add(Color.White);
 
+            var brown = Color.FromArgb(139, 69, 19);
+            colors.Add(brown);
+            if (includeLightShades) colors.Add(ControlPaint.Light(brown));
+
+            var red = Color.FromArgb(255, 0, 0);
+            colors.Add(red);
+            if (includeLightShades) colors.Add(ControlPaint.Light(red));
+
+            var orange = Color.FromArgb(255, 127, 0);
+            colors.Add(orange);
+            if (includeLightShades) colors.Add(ControlPaint.Light(orange));
+
+            var yellow = Color.FromArgb(255, 255, 0);
+            colors.Add(yellow);
+            if (includeLightShades) colors.Add(ControlPaint.Light(yellow));
+
+            var green = Color.FromArgb(0, 255, 0);
+            colors.Add(green);
+            if (includeLightShades) colors.Add(ControlPaint.Light(green));
+
+            var blue = Color.FromArgb(0, 0, 255);
+            colors.Add(blue);
+            if (includeLightShades) colors.Add(ControlPaint.Light(blue));
+
+            var indigo = Color.FromArgb(75, 0, 130);
+            colors.Add(indigo);
+            if (includeLightShades) colors.Add(ControlPaint.Light(indigo));
+
+            var violet = Color.FromArgb(148, 0, 211);
+            colors.Add(violet);
+            if (includeLightShades) colors.Add(ControlPaint.Light(violet));
+
+            var pink = Color.FromArgb(255, 92, 161);
+            colors.Add(pink);
+            if (includeLightShades) colors.Add(ControlPaint.Light(pink));
+
+            return colors.ToArray();
+        }
+
+        /// <summary>
+        /// Get a random color
+        /// </summary>
+        /// <returns></returns>
+        private Color GetRandomColor()
+        {
+            return Color.FromArgb(_random.Next(256), _random.Next(256), _random.Next(256));
+        }
+
+        #endregion Color Palette
+
+        #region Event Handlers - Menu and Tool Items
+
+        /// <summary>
+        /// Set the selected tool action
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void img_Click(object sender, EventArgs e)
         {            
-            _selectedAction = sender as PictureBox;
+            _selectedToolAction = sender as PictureBox;
             pnlTools.Refresh();
         }
 
+        /// <summary>
+        /// Draw a border on the selected tool action
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void toolBoxItem_Paint(object sender, PaintEventArgs e)
         {
             base.OnPaint(e);
 
-            if (sender == _selectedAction)
+            if (sender == _selectedToolAction)
             {
                 DrawBorderOnControl(sender as Control, e.Graphics);
             }
         }
-
-        private void imgOpen_Click(object sender, EventArgs e)
-        {
-            if (dlgOpenFile.ShowDialog(this) != DialogResult.OK) return;
-
-            _openedFileName = dlgOpenFile.FileName;
-            var image = new Bitmap(_openedFileName);
-                        
-            // scale image to canvas
-            var width = (float)imgCanvas.ClientSize.Width;
-            var height = (float)imgCanvas.ClientSize.Height;
-            float scale = Math.Min(width / image.Width, height / image.Height);
-
-            imgCanvas.Image = new Bitmap((int)width, (int)height);
-                        
-            var gfx = Graphics.FromImage(imgCanvas.Image);
-            gfx.InterpolationMode = InterpolationMode.High;
-            gfx.CompositingQuality = CompositingQuality.HighQuality;
-            gfx.SmoothingMode = SmoothingMode.AntiAlias;
-
-            var scaleWidth = (int)(image.Width * scale);
-            var scaleHeight = (int)(image.Height * scale);            
-            gfx.DrawImage(image, new Rectangle(((int)width - scaleWidth) / 2, ((int)height - scaleHeight) / 2, scaleWidth, scaleHeight));
-            gfx.Dispose();
-            
-            imgCanvas.Refresh();            
-        }
-
-        private void imgSave_Click(object sender, EventArgs e)
-        {
-            GetImageFromCanvas();
-            MessageBox.Show("Not implemented");
-        }
-
-        private void imgBrush_Click(object sender, EventArgs e)
-        {
-
-        }
-
+                
+        /// <summary>
+        /// Set backcolor of clicked menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void imgMenuItem_MouseDown(object sender, MouseEventArgs e)
         {
             ((PictureBox)sender).BorderStyle = BorderStyle.FixedSingle;
             ((PictureBox)sender).BackColor = Color.White;
         }
-
+        
+        /// <summary>
+        /// Restore default backcolor of clicked menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void imgMenuItem_MouseUp(object sender, MouseEventArgs e)
         {
-            if (sender == _selectedAction) return;
+            if (sender == _selectedToolAction) return;
 
             ((PictureBox)sender).BorderStyle = BorderStyle.None;
             ((PictureBox)sender).BackColor = Color.LightGray;
         }
 
-        #endregion Event Handlers - Menu Items
+        #endregion Event Handlers - Menu and Tool Items
+                                               
+        #region Canvas
 
-        #region Private Methods - Canvas
-
+        /// <summary>
+        /// Determine what to do when the Canvas is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void imgCanvas_Click(object sender, EventArgs e)
         {
-            if (_selectedAction == null) return;
+            if (_selectedToolAction == null) return;
 
-            switch(_selectedAction.Name)
+            switch(_selectedToolAction.Name)
             {
                 case "imgFill":
                     DoBucketFill();
@@ -205,9 +260,58 @@ namespace SimplePaint.UI
             }            
         }
 
-        #endregion Private Methods - Canvas
+        private Bitmap GetImageFromCanvas()
+        {
+            var bmp = new Bitmap(imgCanvas.ClientSize.Width, imgCanvas.ClientSize.Height);
+            imgCanvas.DrawToBitmap(bmp, imgCanvas.ClientRectangle);
+            bmp.Save("C:\\temp\\myImage.bmp");
+            return bmp;
+        }
 
-        #region Private Methods - Text Tool
+        #endregion Canvas
+
+        #region Open Menu Item
+
+        private void imgOpen_Click(object sender, EventArgs e)
+        {
+            if (dlgOpenFile.ShowDialog(this) != DialogResult.OK) return;
+
+            _openedFileName = dlgOpenFile.FileName;
+            var image = new Bitmap(_openedFileName);
+
+            // scale image to canvas
+            var width = (float)imgCanvas.ClientSize.Width;
+            var height = (float)imgCanvas.ClientSize.Height;
+            float scale = Math.Min(width / image.Width, height / image.Height);
+
+            imgCanvas.Image = new Bitmap((int)width, (int)height);
+
+            var gfx = Graphics.FromImage(imgCanvas.Image);
+            gfx.InterpolationMode = InterpolationMode.High;
+            gfx.CompositingQuality = CompositingQuality.HighQuality;
+            gfx.SmoothingMode = SmoothingMode.AntiAlias;
+
+            var scaleWidth = (int)(image.Width * scale);
+            var scaleHeight = (int)(image.Height * scale);
+            gfx.DrawImage(image, new Rectangle(((int)width - scaleWidth) / 2, ((int)height - scaleHeight) / 2, scaleWidth, scaleHeight));
+            gfx.Dispose();
+
+            imgCanvas.Refresh();
+        }
+
+        #endregion Open Menu Item
+
+        #region Save Menu Item
+
+        private void imgSave_Click(object sender, EventArgs e)
+        {
+            GetImageFromCanvas();
+            MessageBox.Show("Not implemented");
+        }
+
+        #endregion Save Menu Item
+
+        #region Text Tool
 
         private void DoEnterText()
         {
@@ -216,7 +320,12 @@ namespace SimplePaint.UI
 
         #endregion Private Methods - Text Tool
 
-        #region Private Methods - Brush Tool
+        #region Brush Tool
+
+        private void imgBrush_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void DoBrush()
         {
@@ -225,7 +334,7 @@ namespace SimplePaint.UI
 
         #endregion Private Methods - Brush Tool
 
-        #region Private Methods - Bucket Tool
+        #region Bucket Tool
 
         private void DoBucketFill()
         {
@@ -291,79 +400,35 @@ namespace SimplePaint.UI
 
         #endregion Private Methods - Bucket Tool
 
-        private Bitmap GetImageFromCanvas()
-        {
-            var bmp = new Bitmap(imgCanvas.ClientSize.Width, imgCanvas.ClientSize.Height);            
-            imgCanvas.DrawToBitmap(bmp, imgCanvas.ClientRectangle);
-            bmp.Save("C:\\temp\\myImage.bmp");
-            return bmp;            
-        }
-
-        #region Private Methods - Colors
+        #region Private Methods
 
         /// <summary>
-        /// Returns colors for the palette.
-        /// By default it'll return Black, Gray, White, and the 7 
-        /// rainbow colors (red, orange, yellow, green, blue, indigo, 
-        /// violet). If includeLightShades is true, it'll also
-        /// return light shades of the rainbow colors.
+        /// Draw a border on a control
+        /// Uses: _borderColor, _borderWidth
         /// </summary>
-        /// <param name="includeLightShades"></param>
-        /// <returns></returns>
-        private Color[] GetPaletteColors(bool includeLightShades = false)
+        /// <param name="control"></param>
+        /// <param name="gfx"></param>
+        private void DrawBorderOnControl(Control control, Graphics gfx)
         {
-            var colors = new List<Color>();
+            if (control == null) return;
 
-            colors.Add(Color.Black);
-            colors.Add(Color.Gray);
-            colors.Add(Color.White);
+            var rect = control.ClientRectangle;
+            rect.Height -= 1;
+            rect.Width -= 1;
 
-            var brown = Color.FromArgb(139, 69, 19);
-            colors.Add(brown);
-            if (includeLightShades) colors.Add(ControlPaint.Light(brown));
+            var path = new GraphicsPath();
+            path.AddLine(rect.X, rect.Y, rect.X + rect.Width, rect.Y);
+            path.AddLine(rect.X + rect.Width, rect.Y, rect.X + rect.Width, rect.Y + rect.Height);
+            path.AddLine(rect.X + rect.Width, rect.Y + rect.Height, rect.X, rect.Y + rect.Height);
+            path.AddLine(rect.X, rect.Y + rect.Height, rect.X, rect.Y);
 
-            var red = Color.FromArgb(255, 0, 0);
-            colors.Add(red);
-            if(includeLightShades) colors.Add(ControlPaint.Light(red));
-            
-            var orange = Color.FromArgb(255, 127, 0);
-            colors.Add(orange);
-            if (includeLightShades) colors.Add(ControlPaint.Light(orange));
-            
-            var yellow = Color.FromArgb(255, 255, 0);
-            colors.Add(yellow);
-            if (includeLightShades) colors.Add(ControlPaint.Light(yellow));
-           
-            var green = Color.FromArgb(0, 255, 0);
-            colors.Add(green);
-            if (includeLightShades) colors.Add(ControlPaint.Light(green));
-            
-            var blue = Color.FromArgb(0, 0, 255);
-            colors.Add(blue);
-            if (includeLightShades) colors.Add(ControlPaint.Light(blue));
-            
-            var indigo = Color.FromArgb(75, 0, 130);
-            colors.Add(indigo);
-            if (includeLightShades) colors.Add(ControlPaint.Light(indigo));
-            
-            var violet = Color.FromArgb(148, 0, 211);
-            colors.Add(violet);
-            if (includeLightShades) colors.Add(ControlPaint.Light(violet));
-            
-            var pink = Color.FromArgb(255, 92, 161);
-            colors.Add(pink);
-            if (includeLightShades) colors.Add(ControlPaint.Light(pink));
-
-            return colors.ToArray();
+            using (var p = new Pen(_borderColor, _borderWidth))
+            {
+                gfx.DrawPath(p, path);
+            }
         }
 
-        private Color GetRandomColor()
-        {
-            return Color.FromArgb(_random.Next(256), _random.Next(256), _random.Next(256));
-
-        }
-
-        #endregion Private Methods - Colors
+        #endregion Private Methods
 
         #region Event Handlers - Menu Items Paint
 
