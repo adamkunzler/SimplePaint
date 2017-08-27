@@ -60,6 +60,7 @@
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.AliceBlue;
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -79,7 +80,7 @@
             // 
             // pnlPalette
             // 
-            this.pnlPalette.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pnlPalette.BackColor = System.Drawing.Color.AliceBlue;
             this.tableLayoutPanel1.SetColumnSpan(this.pnlPalette, 3);
             this.pnlPalette.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlPalette.Location = new System.Drawing.Point(3, 714);
@@ -99,6 +100,7 @@
             // 
             // imgCanvas
             // 
+            this.imgCanvas.BackColor = System.Drawing.Color.AliceBlue;
             this.imgCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imgCanvas.Location = new System.Drawing.Point(0, 0);
             this.imgCanvas.Name = "imgCanvas";
@@ -111,7 +113,7 @@
             // 
             // pnlMenu
             // 
-            this.pnlMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pnlMenu.BackColor = System.Drawing.Color.AliceBlue;
             this.pnlMenu.Controls.Add(this.imgOpen);
             this.pnlMenu.Controls.Add(this.imgSave);
             this.pnlMenu.Controls.Add(this.imgUndo);
@@ -180,6 +182,7 @@
             // 
             // pnlTools
             // 
+            this.pnlTools.BackColor = System.Drawing.Color.AliceBlue;
             this.pnlTools.Controls.Add(this.imgBrush);
             this.pnlTools.Controls.Add(this.imgFill);
             this.pnlTools.Controls.Add(this.imgText);

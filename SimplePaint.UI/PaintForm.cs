@@ -242,7 +242,7 @@ namespace SimplePaint.UI
             if (sender == _selectedToolAction) return;
 
             ((PictureBox)sender).BorderStyle = BorderStyle.None;
-            ((PictureBox)sender).BackColor = Color.LightGray;
+            ((PictureBox)sender).BackColor = Color.AliceBlue;
         }
 
         #endregion Event Handlers - Menu and Tool Items
@@ -434,14 +434,10 @@ namespace SimplePaint.UI
         #region Bucket Tool
 
         private void DoBucketFill()
-        {
-            //var image = _currentBitmap;//GetImageFromCanvas();
+        {            
             var position = imgCanvas.PointToClient(Cursor.Position);
             FloodFill(_currentBitmap, position, Color.White, _selectedColor);
-
-            //var gfx = Graphics.FromImage(imgCanvas.Image);
-            //gfx.DrawImage(image, 0, 0);
-            //gfx.Dispose();
+            
             imgCanvas.Refresh();
         }
 
@@ -554,6 +550,6 @@ namespace SimplePaint.UI
         }
 
 
-        #endregion Event Handlers - Menu Items Paint                
+        #endregion Event Handlers - Menu Items Paint                        
     }
 }
