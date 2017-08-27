@@ -16,8 +16,7 @@ namespace SimplePaint.UI
 
         private Random _random = new Random();
         private string _formTitle = "Simple Paint";
-
-        private string _openedFileName;
+        
         private Font _menuItemFont = new Font(new FontFamily("Cambria"), 20, FontStyle.Regular, GraphicsUnit.Pixel);
         private StringFormat _menuItemFormat = new StringFormat()
         {
@@ -27,9 +26,13 @@ namespace SimplePaint.UI
         private Color _borderColor = Color.FromArgb(30, 144, 255);
         private float _borderWidth = 10f;
 
-        private PictureBox _selectedToolAction = null;
-        
+        private PictureBox _selectedToolAction = null;        
         private Color _selectedColor = Color.Black;
+
+        private string _openedFileName;
+        private Bitmap _currentBitmap;
+        private Stack<Bitmap> _redo;
+        private Stack<Bitmap> _undo;
 
         #endregion Private Members
 
@@ -40,11 +43,9 @@ namespace SimplePaint.UI
             InitializeComponent();
 
             Text = _formTitle;
-
-            // init the canvas image
-            var width = (float)imgCanvas.ClientSize.Width;
-            var height = (float)imgCanvas.ClientSize.Height;
-            imgCanvas.Image = new Bitmap((int)width, (int)height);
+                                    
+            // init the canvas image and bitmap
+            ResizeCanvasAndCurrentBitmap();
 
             // init open file dialog
             dlgOpenFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -260,12 +261,39 @@ namespace SimplePaint.UI
             }            
         }
 
+        /// <summary>
+        /// Draw the currentBitmap to the canvas image
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void imgCanvas_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawImage(_currentBitmap, 0, 0);
+        }
+
         private Bitmap GetImageFromCanvas()
         {
             var bmp = new Bitmap(imgCanvas.ClientSize.Width, imgCanvas.ClientSize.Height);
             imgCanvas.DrawToBitmap(bmp, imgCanvas.ClientRectangle);
             bmp.Save("C:\\temp\\myImage.bmp");
             return bmp;
+        }
+
+        /// <summary>
+        /// Resize the imgCanvas and _currentBitmap to the same dimensions of pnlCanvas
+        /// </summary>
+        /// <returns></returns>
+        private PointF ResizeCanvasAndCurrentBitmap()
+        {
+            // scale image to canvas\bitmap
+            var width = (float)imgCanvas.ClientSize.Width;
+            var height = (float)imgCanvas.ClientSize.Height;
+
+            // resize the canvas image and currentBitmap            
+            imgCanvas.Image = new Bitmap((int)width, (int)height);
+            _currentBitmap = new Bitmap((int)width, (int)height);
+
+            return new PointF(width, height);
         }
 
         #endregion Canvas
@@ -279,21 +307,17 @@ namespace SimplePaint.UI
             _openedFileName = dlgOpenFile.FileName;
             var image = new Bitmap(_openedFileName);
 
-            // scale image to canvas
-            var width = (float)imgCanvas.ClientSize.Width;
-            var height = (float)imgCanvas.ClientSize.Height;
-            float scale = Math.Min(width / image.Width, height / image.Height);
+            var dims = ResizeCanvasAndCurrentBitmap();
 
-            imgCanvas.Image = new Bitmap((int)width, (int)height);
-
-            var gfx = Graphics.FromImage(imgCanvas.Image);
+            var gfx = Graphics.FromImage(_currentBitmap);
             gfx.InterpolationMode = InterpolationMode.High;
             gfx.CompositingQuality = CompositingQuality.HighQuality;
             gfx.SmoothingMode = SmoothingMode.AntiAlias;
 
+            var scale = Math.Min(dims.X / image.Width, dims.Y / image.Height);
             var scaleWidth = (int)(image.Width * scale);
             var scaleHeight = (int)(image.Height * scale);
-            gfx.DrawImage(image, new Rectangle(((int)width - scaleWidth) / 2, ((int)height - scaleHeight) / 2, scaleWidth, scaleHeight));
+            gfx.DrawImage(image, new Rectangle(((int)dims.X - scaleWidth) / 2, ((int)dims.Y - scaleHeight) / 2, scaleWidth, scaleHeight));
             gfx.Dispose();
 
             imgCanvas.Refresh();
@@ -338,13 +362,13 @@ namespace SimplePaint.UI
 
         private void DoBucketFill()
         {
-            var image = GetImageFromCanvas();
+            //var image = _currentBitmap;//GetImageFromCanvas();
             var position = imgCanvas.PointToClient(Cursor.Position);
-            FloodFill(image, position, Color.White, _selectedColor);
+            FloodFill(_currentBitmap, position, Color.White, _selectedColor);
 
-            var gfx = Graphics.FromImage(imgCanvas.Image);
-            gfx.DrawImage(image, 0, 0);
-            gfx.Dispose();
+            //var gfx = Graphics.FromImage(imgCanvas.Image);
+            //gfx.DrawImage(image, 0, 0);
+            //gfx.Dispose();
             imgCanvas.Refresh();
         }
 
@@ -457,6 +481,6 @@ namespace SimplePaint.UI
         }
 
 
-        #endregion Event Handlers - Menu Items Paint        
+        #endregion Event Handlers - Menu Items Paint                
     }
 }

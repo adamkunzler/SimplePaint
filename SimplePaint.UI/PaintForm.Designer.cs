@@ -98,13 +98,15 @@
             // 
             // imgCanvas
             // 
+            this.imgCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imgCanvas.Location = new System.Drawing.Point(0, 0);
             this.imgCanvas.Name = "imgCanvas";
-            this.imgCanvas.Size = new System.Drawing.Size(978, 755);
+            this.imgCanvas.Size = new System.Drawing.Size(1440, 705);
             this.imgCanvas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.imgCanvas.TabIndex = 0;
             this.imgCanvas.TabStop = false;
             this.imgCanvas.Click += new System.EventHandler(this.imgCanvas_Click);
+            this.imgCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.imgCanvas_Paint);
             // 
             // pnlMenu
             // 
