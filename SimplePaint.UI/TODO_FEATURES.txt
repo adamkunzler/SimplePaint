@@ -7,6 +7,6 @@
 [x] store image in bitmap for manipulation rather than picture box
 [x] save as
 [x] improve menu button functionality
-[] text feature
+[x] text feature
 [x] gdi+ error
 [x] check for load filename before saving

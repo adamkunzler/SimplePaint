@@ -18,6 +18,7 @@ namespace SimplePaint.UI
         private string _formTitle = "Simple Paint";
         
         private Font _menuItemFont = new Font(new FontFamily("Cambria"), 20, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font _textFont = new Font(new FontFamily("Cambria"), 20, FontStyle.Regular, GraphicsUnit.Pixel);
         private StringFormat _menuItemFormat = new StringFormat()
         {
             Alignment = StringAlignment.Center,
@@ -29,6 +30,8 @@ namespace SimplePaint.UI
         private string _saveDialogFilter = "Png Image (.png)|*.png|Gif Image (.gif)|*.gif|JPEG Image (.jpeg)|*.jpeg|JPEG Image (.jpg)|*.jpeg|Bitmap Image (.bmp)|*.bmp";
         private PictureBox _selectedToolAction = null;        
         private Color _selectedColor = Color.Black;
+        private bool _isTextStarted = false;
+        private Point _textPosition = Point.Empty;
 
         private string _openedFileName;
         private string _savedFileName;
@@ -204,8 +207,7 @@ namespace SimplePaint.UI
         /// <param name="e"></param>
         private void img_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Coming soon!!");
-            return;
+            if (_isTextStarted && ((PictureBox)sender).Name != "imgText") CancelText();
 
             _selectedToolAction = sender as PictureBox;
             pnlTools.Refresh();
@@ -326,8 +328,17 @@ namespace SimplePaint.UI
                     DoBucketFill();                    
                     break;
                 case "imgText":
-                    SetUndoPoint();
-                    DoEnterText();                    
+                    if (_isTextStarted)
+                    {
+                        _isTextStarted = false;                        
+                        FinishEnterText();
+                    }
+                    else
+                    {
+                        _isTextStarted = true;
+                        SetUndoPoint();
+                        StartEnterText();
+                    }
                     break;
                 case "imgBrush":
                     DoBrush();
@@ -478,9 +489,41 @@ namespace SimplePaint.UI
 
         #region Text Tool
 
-        private void DoEnterText()
+        private void CancelText()
         {
+            imgCanvas.Controls.Clear();
+        }
 
+        private void StartEnterText()
+        {
+            _textPosition = imgCanvas.PointToClient(Cursor.Position);
+
+            var txtBox = GetTextBox();
+            imgCanvas.Controls.Add(txtBox);
+        }
+
+        private TextBox GetTextBox()
+        {
+            var txtBox = new TransparentTextBox();            
+            txtBox.Name = "txtCanvasText";
+            txtBox.Location = _textPosition;
+            txtBox.Multiline = true;
+            txtBox.Size = new Size(400, 100);
+            txtBox.Font = _textFont;            
+            return txtBox;
+        }
+
+        private void FinishEnterText()
+        {
+            var txtBox = imgCanvas.Controls[0] as TextBox;
+
+            var gfx = Graphics.FromImage(_currentBitmap);
+            gfx.DrawString(txtBox.Text, _textFont, Brushes.Black, _textPosition);
+            gfx.Dispose();
+            imgCanvas.Refresh();
+
+            CancelText();
+            _textPosition = Point.Empty;
         }
 
         #endregion Private Methods - Text Tool
