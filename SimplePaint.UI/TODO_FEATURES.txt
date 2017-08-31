@@ -9,3 +9,4 @@
 [x] improve menu button functionality
 [] text feature
 [x] gdi+ error
+[x] check for load filename before saving

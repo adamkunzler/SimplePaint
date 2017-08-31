@@ -421,7 +421,12 @@ namespace SimplePaint.UI
 
         private void imgSave_Click(object sender, EventArgs e)
         {
-            //GetImageFromCanvas();
+            if(string.IsNullOrWhiteSpace(_openedFileName))
+            {
+                MessageBox.Show(this, "Please load an image before saving.", "Save Error", MessageBoxButtons.OK);
+                return;
+            }
+            
             if (string.IsNullOrEmpty(_savedFileName))
             {
                 dlgSaveFile.ShowDialog();
