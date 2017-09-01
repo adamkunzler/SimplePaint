@@ -4,11 +4,11 @@ A simple Windows paint application for coloring coloring pages.
 
 A friend who works with severly handicapped children approached me in regards to a simple paint application better suited for an eye gaze system. This meant bigger buttons and minimalised functionality. The application was developed specifically for this student. They use it to "paint" worksheets.
 
-Screenshot of SimplePaint when you first launch it:
-![app first start up](https://github.com/adamkunzler/SimplePaint/blob/master/Binaries/simplepaint_01.png "First loaded")
+Screenshot of SimplePaint when you first load an image:
+![image loaded](https://github.com/adamkunzler/SimplePaint/blob/master/Binaries/simplepaint_01.png "Image loaded")
 
-Screenshot of SimplePaint with a file loaded and painted:
-![app in use](https://github.com/adamkunzler/SimplePaint/blob/master/Binaries/simplepaint_02.png "Painting!")
+Screenshot of SimplePaint with a painted image:
+![image painted](https://github.com/adamkunzler/SimplePaint/blob/master/Binaries/simplepaint_02.png "Image painted")
 
 ## How To Use SimplePaint
 
